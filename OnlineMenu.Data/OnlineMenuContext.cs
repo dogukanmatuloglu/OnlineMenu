@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OnlineMenu.Data
 {
-    public  class OnlineMenuContext:IdentityDbContext
+    public  class OnlineMenuContext:IdentityDbContext<User>
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
