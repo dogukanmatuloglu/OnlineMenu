@@ -9,14 +9,15 @@ using System.Threading.Tasks;
 
 namespace OnlineMenu.Data.Configuration
 {
-    internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
+    internal class UserConfiguration : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<Category> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).UseIdentityColumn();
-            builder.Property(x => x.Name).HasMaxLength(150).IsRequired();
-            builder.HasOne(x => x.User).WithMany(x => x.Categories).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
+            builder.Property(x=>x.UserName).HasMaxLength(100).IsRequired();
+          
+           
         }
     }
 }
