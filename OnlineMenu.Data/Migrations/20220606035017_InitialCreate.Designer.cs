@@ -12,7 +12,7 @@ using OnlineMenu.Data;
 namespace OnlineMenu.Data.Migrations
 {
     [DbContext(typeof(OnlineMenuContext))]
-    [Migration("20220606033840_InitialCreate")]
+    [Migration("20220606035017_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -143,7 +143,7 @@ namespace OnlineMenu.Data.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -161,7 +161,7 @@ namespace OnlineMenu.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Image")
@@ -181,7 +181,7 @@ namespace OnlineMenu.Data.Migrations
                         .HasPrecision(5, 2)
                         .HasColumnType("float(5)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -354,7 +354,8 @@ namespace OnlineMenu.Data.Migrations
                     b.HasOne("OnlineMenu.Core.Entities.User", "User")
                         .WithMany("Categories")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -364,12 +365,14 @@ namespace OnlineMenu.Data.Migrations
                     b.HasOne("OnlineMenu.Core.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("OnlineMenu.Core.Entities.User", "User")
                         .WithMany("Products")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
 
