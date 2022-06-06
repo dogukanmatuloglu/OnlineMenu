@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OnlineMenu.Core.Entities
 {
-    public class User:IdentityUser
+    public class User:IdentityUser<int>
     {
         public string? Picture { get; set; }
         public string? Info { get; set; }

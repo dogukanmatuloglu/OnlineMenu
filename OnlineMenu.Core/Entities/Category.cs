@@ -12,9 +12,9 @@ namespace OnlineMenu.Core.Entities
         public string Name { get; set; }
         public string? Image { get; set; }
 
-        public ICollection<Product> Products { get; set; }
-        public int UserId { get; set; }
-        public User User { get; set; }
+        public ICollection<Product>? Products { get; set; }
+        public int? UserId { get; set; }
+        public User? User { get; set; }
 
     }
 }
