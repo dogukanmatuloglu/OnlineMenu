@@ -10,12 +10,12 @@ namespace OnlineMenu.Core.Repositories
     public interface IGenericRepository<T> where T : class
     {
         Task<IEnumerable<T>> GetAllAsync(int userId, Expression<Func<T, bool>> predicate = null,params Expression<Func<T, object>>[] includeProperties);
-        Task<T> GetByIdAsync(int id,int userId);
-        Task AddAysnc(T entity, int userId);
-        Task Update(T entity, int userId);
-        Task Delete(int id, int userId);
-        Task<bool> AnyAsync(Expression<Func<T,bool>> predicate, int userId);
-        Task<int> CountAsync(Expression<Func<T,bool>> predicate, int userId);
+        Task<T> GetByIdAsync(int id);
+        Task AddAysnc(T entity);
+        Task Update(T entity );
+        Task Delete(int id);
+        Task<bool> AnyAsync(Expression<Func<T,bool>> predicate);
+        Task<int> CountAsync(Expression<Func<T,bool>> predicate);
 
 
     }
