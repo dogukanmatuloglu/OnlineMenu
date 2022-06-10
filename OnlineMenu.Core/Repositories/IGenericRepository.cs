@@ -9,7 +9,7 @@ namespace OnlineMenu.Core.Repositories
 {
     public interface IGenericRepository<T> where T : class
     {
-        Task<IEnumerable<T>> GetAllAsync(int userId, Expression<Func<T, bool>> predicate = null,params Expression<Func<T, object>>[] includeProperties);
+        Task<IEnumerable<T>> GetAllAsync( Expression<Func<T, bool>> predicate = null,params Expression<Func<T, object>>[] includeProperties);
         Task<T> GetByIdAsync(int id);
         Task AddAysnc(T entity);
         Task Update(T entity );

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OnlineMenu.Core.Dtos;
+using OnlineMenu.Core.Entities;
 using OnlineMenu.Core.IUnitOfWork;
 using OnlineMenu.Core.Services;
 using System;
@@ -23,39 +24,46 @@ namespace OnlineMenu.Service
             _mapper = mapper;
         }
 
-        public Task AddAysnc(CategoryAddDto entity)
+        public async Task AddAysnc(CategoryAddDto entity)
         {
-            _unitOfWork.categoryRepository.AddAysnc()
+           await _unitOfWork.categoryRepository.AddAysnc(_mapper.Map<Category>(entity));
+            await _unitOfWork.SaveAsync();
         }
 
         public Task<bool> AnyAsync()
         {
-            throw new NotImplementedException();
+            return _unitOfWork.categoryRepository.AnyAsync(null
+                );
         }
 
-        public Task<int> CountAsync()
+        public async Task<int> CountAsync()
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.categoryRepository.CountAsync(null);
         }
 
-        public Task Delete(int id)
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+          
+            await _unitOfWork.categoryRepository.Delete(id);
+            await _unitOfWork.SaveAsync();
         }
 
-        public Task<IEnumerable<CategoryDto>> GetAllAsync(int userId)
+        public async Task<IEnumerable<CategoryDto>> GetAllAsync(int userId)
         {
-            throw new NotImplementedException();
+         var categoryList=await _unitOfWork.categoryRepository.GetAllAsync(x=>x.UserId==userId);
+            return _mapper.Map<IEnumerable<CategoryDto>>(categoryList);
         }
 
-        public Task<CategoryDto> GetByIdAsync(int id)
+        public async Task<CategoryDto> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+          var category= await _unitOfWork.categoryRepository.GetByIdAsync(id);
+            return _mapper.Map<CategoryDto>(category);
         }
 
-        public Task Update(CategoryUpdateDto entity)
+        public async Task Update(CategoryUpdateDto entity)
         {
-            throw new NotImplementedException();
+            await _unitOfWork.categoryRepository.Update(_mapper.Map<Category>(entity));
+            await _unitOfWork.SaveAsync();
         }
     }
 }

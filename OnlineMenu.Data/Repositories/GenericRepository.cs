@@ -27,7 +27,7 @@ namespace OnlineMenu.Data.Repositories
           return  await _context.Set<T>().AnyAsync(predicate);
         }
 
-        public async Task<int> CountAsync(Expression<Func<T, bool>> predicate)
+        public async Task<int> CountAsync(Expression<Func<T, bool>> predicate=null)
         {
             return  await _context.Set<T>().CountAsync(predicate);
         }
@@ -39,7 +39,7 @@ namespace OnlineMenu.Data.Repositories
             //_context.Set<T>().Remove(deletedEntity);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync(int userId, Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includeProperties)
+        public async Task<IEnumerable<T>> GetAllAsync( Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = _context.Set<T>();
             if (predicate!=null)
