@@ -17,6 +17,12 @@ namespace OnlineMenu.Service.Mapping
             CreateMap<CategoryUpdateDto, Category>();
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>();
+
+            CreateMap<ProductAddDto, Product>();
+            CreateMap<ProductUpdateDto, Product>();
+            CreateMap<Product, ProductDto>();
+            CreateMap<ProductDto, Product>();
+
         }
     }
 }
