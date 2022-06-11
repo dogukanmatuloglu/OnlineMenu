@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OnlineMenu.Core.Dtos;
+using OnlineMenu.Core.Entities;
 using OnlineMenu.Core.IUnitOfWork;
 using OnlineMenu.Core.Services;
 using System;
@@ -22,39 +23,44 @@ namespace OnlineMenu.Service.Services
             _mapper = mapper;
         }
 
-        public Task AddAysnc(ProductAddDto entity)
+        public async Task AddAysnc(ProductAddDto entity)
         {
-            throw new NotImplementedException();
+            await _unitOfWork.productRepository.AddAysnc(_mapper.Map<Product>(entity));
+            await _unitOfWork.SaveAsync();
         }
 
-        public Task<bool> AnyAsync()
+        public async Task<bool> AnyAsync()
         {
-            throw new NotImplementedException();
+           return await _unitOfWork.productRepository.AnyAsync(null);
         }
 
-        public Task<int> CountAsync()
+        public async Task<int> CountAsync()
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.productRepository.CountAsync(null);
         }
 
-        public Task Delete(int id)
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+           await _unitOfWork.productRepository.Delete(id);
+            await _unitOfWork.SaveAsync();  
         }
 
-        public Task<IEnumerable<ProductDto>> GetAllAsync(int userId)
+        public async Task<IEnumerable<ProductDto>> GetAllAsync(int userId)
         {
-            throw new NotImplementedException();
+           var productList=await _unitOfWork.productRepository.GetAllAsync(x=>x.UserId==userId);
+            return _mapper.Map<IEnumerable<ProductDto>>(productList);
         }
 
-        public Task<ProductDto> GetByIdAsync(int id)
+        public async Task<ProductDto> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var product=await _unitOfWork.productRepository.GetByIdAsync(id);
+            return _mapper.Map<ProductDto>(product);
         }
 
-        public Task Update(ProductUpdateDto entity)
+        public async Task Update(ProductUpdateDto entity)
         {
-            throw new NotImplementedException();
+            await _unitOfWork.productRepository.Update(_mapper.Map<Product>(entity));
+            await _unitOfWork.SaveAsync();
         }
     }
 }
