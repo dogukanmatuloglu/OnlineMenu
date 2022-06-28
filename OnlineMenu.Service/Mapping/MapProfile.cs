@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OnlineMenu.Service.Mapping
 {
-    internal class MapProfile:Profile
+    public class MapProfile:Profile
     {
         public MapProfile()
         {
