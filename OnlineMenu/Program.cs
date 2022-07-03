@@ -9,7 +9,13 @@ using OnlineMenu.Service.Services;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<OnlineMenuContext>();
-builder.Services.AddIdentity<User,Role>().AddEntityFrameworkStores<OnlineMenuContext>();
+builder.Services.AddIdentity<User, Role>(x => {
+    x.Password.RequiredLength = 4;
+    x.Password.RequireNonAlphanumeric = false;
+    x.Password.RequireUppercase=false;
+    x.Password.RequireDigit = false;
+
+}).AddEntityFrameworkStores<OnlineMenuContext>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
