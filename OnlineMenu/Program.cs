@@ -5,17 +5,18 @@ using OnlineMenu.Data;
 using OnlineMenu.Data.UnitOfWork;
 using OnlineMenu.Service.Mapping;
 using OnlineMenu.Service.Services;
+using OnlineMenu.UI.IdentityCustomValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<OnlineMenuContext>();
 builder.Services.AddIdentity<User, Role>(x => {
-    x.Password.RequiredLength = 4;
+    x.Password.RequiredLength = 4; 
     x.Password.RequireNonAlphanumeric = false;
     x.Password.RequireUppercase=false;
     x.Password.RequireDigit = false;
 
-}).AddEntityFrameworkStores<OnlineMenuContext>();
+}).AddPasswordValidator<CustomPasswordValidator>().AddEntityFrameworkStores<OnlineMenuContext>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
