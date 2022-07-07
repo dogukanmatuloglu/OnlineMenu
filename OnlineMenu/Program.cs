@@ -11,6 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<OnlineMenuContext>();
 builder.Services.AddIdentity<User, Role>(x => {
+
+    x.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._";
+    x.User.RequireUniqueEmail = true;
+
+
     x.Password.RequiredLength = 4; 
     x.Password.RequireNonAlphanumeric = false;
     x.Password.RequireUppercase=false;

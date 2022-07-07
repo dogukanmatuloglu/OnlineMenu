@@ -10,7 +10,11 @@ namespace OnlineMenu.UI.IdentityCustomValidation
            List<IdentityError> identityErrors = new List<IdentityError>();
             if (password.ToLower().Contains(user.UserName.ToLower()))
             {
-                identityErrors.Add(new IdentityError() { Code="PasswordContainsUserName", Description="Şifre Alanı Kullanıcı Adı İçeremez."});
+                if (!user.Email.Contains(user.UserName))
+                {
+                    identityErrors.Add(new IdentityError() { Code = "PasswordContainsUserName", Description = "Şifre Alanı Kullanıcı Adı İçeremez." });
+                }
+               
             }
 
             if (password.ToLower().Contains("1234"))
