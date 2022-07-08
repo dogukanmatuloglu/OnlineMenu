@@ -21,7 +21,7 @@ builder.Services.AddIdentity<User, Role>(x => {
     x.Password.RequireUppercase=false;
     x.Password.RequireDigit = false;
 
-}).AddPasswordValidator<CustomPasswordValidator>().AddUserValidator<CustomUserValidator>().AddEntityFrameworkStores<OnlineMenuContext>();
+}).AddPasswordValidator<CustomPasswordValidator>().AddUserValidator<CustomUserValidator>().AddErrorDescriber<CustomIdentityErrorDescriber>().AddEntityFrameworkStores<OnlineMenuContext>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
