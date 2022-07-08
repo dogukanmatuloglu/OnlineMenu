@@ -10,6 +10,15 @@ using OnlineMenu.UI.IdentityCustomValidation;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<OnlineMenuContext>();
+CookieBuilder cookieBuilder = new CookieBuilder()
+{
+    Name = "OnlineMenu",
+    HttpOnly = false,
+    Expiration = TimeSpan.FromDays(60),
+    SameSite = SameSiteMode.Lax,
+    SecurePolicy=CookieSecurePolicy.None 
+};
+builder.Services.ConfigureApplicationCookie(x => { x.LoginPath = "/User/Login"; x.Cookie = cookieBuilder; x.SlidingExpiration = true; });
 builder.Services.AddIdentity<User, Role>(x => {
 
     x.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._";
