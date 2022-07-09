@@ -14,7 +14,10 @@ namespace OnlineMenu.UI.Controllers
             _userManager = userManager;
         }
 
-        
+        public IActionResult LogIn()
+        {
+            return View();
+        }
         public IActionResult SignUp()
         {
             return View();
