@@ -9,13 +9,41 @@ namespace OnlineMenu.UI.Controllers
     {
 
         private readonly UserManager<User> _userManager;
-        public UserController(UserManager<User> userManager)
+        private readonly SignInManager<User> _signInManager;
+        public UserController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public IActionResult LogIn()
         {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> LogIn(LoginViewModel loginViewModel )
+        {
+            if (ModelState.IsValid)
+            {
+                User user = await _userManager.FindByEmailAsync(loginViewModel.Email);
+                if (user!=null)
+                {
+                    await _signInManager.SignOutAsync();
+                   Microsoft.AspNetCore.Identity.SignInResult result= await _signInManager.PasswordSignInAsync(user,loginViewModel.Password,false,false);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Deneme");
+                    }
+                
+
+
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Geçersiz kullanıcı adı veya şifresi");
+                }
+            }
             return View();
         }
         public IActionResult SignUp()

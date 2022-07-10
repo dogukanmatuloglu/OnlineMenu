@@ -10,16 +10,7 @@ using OnlineMenu.UI.IdentityCustomValidation;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<OnlineMenuContext>();
-CookieBuilder cookieBuilder = new CookieBuilder()
-{
-    Name = "OnlineMenu",
-    HttpOnly = false,
-    
-   
-    SameSite = SameSiteMode.Lax,
-    SecurePolicy=CookieSecurePolicy.None 
-};
-builder.Services.ConfigureApplicationCookie(x => { x.LoginPath = "/User/Login"; x.Cookie = cookieBuilder; x.SlidingExpiration = true; x.ExpireTimeSpan=TimeSpan.FromDays(60); });
+
 builder.Services.AddIdentity<User, Role>(x => {
 
     x.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._";
@@ -32,7 +23,16 @@ builder.Services.AddIdentity<User, Role>(x => {
     x.Password.RequireDigit = false;
 
 }).AddPasswordValidator<CustomPasswordValidator>().AddUserValidator<CustomUserValidator>().AddErrorDescriber<CustomIdentityErrorDescriber>().AddEntityFrameworkStores<OnlineMenuContext>();
+CookieBuilder cookieBuilder = new CookieBuilder()
+{
+    Name = "OnlineMenu",
+    HttpOnly = false,
 
+
+    SameSite = SameSiteMode.Lax,
+    SecurePolicy = CookieSecurePolicy.None
+};
+builder.Services.ConfigureApplicationCookie(x => { x.LoginPath = "/User/Login"; x.Cookie = cookieBuilder; x.SlidingExpiration = true; x.ExpireTimeSpan = TimeSpan.FromDays(60); });
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddControllersWithViews();
