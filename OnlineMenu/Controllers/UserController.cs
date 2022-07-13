@@ -16,8 +16,9 @@ namespace OnlineMenu.UI.Controllers
             _signInManager = signInManager;
         }
 
-        public IActionResult LogIn()
+        public IActionResult LogIn(string returnUrl)//authorize bir controllera erişmek istediğimiz zaamaan cookie içerisinde belirlenen login path a bir return url döndürür
         {
+            TempData["ReturnUrl"]= returnUrl;
             return View();
         }
         [HttpPost]
@@ -33,6 +34,11 @@ namespace OnlineMenu.UI.Controllers
 
                     if (result.Succeeded)
                     {
+
+                        if (TempData["ReturnUrl"]!=null)
+                        {
+                            return Redirect(TempData["ReturnUrl"].ToString());
+                        }
                         return RedirectToAction("Index", "Deneme");
                     }
                 
