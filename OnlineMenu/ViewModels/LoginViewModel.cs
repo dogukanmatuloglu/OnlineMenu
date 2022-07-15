@@ -13,5 +13,8 @@ namespace OnlineMenu.UI.ViewModels
         [DataType(DataType.Password)]
         [MinLength(4,ErrorMessage ="Şifreniz en az 4 karakter olmalı")]
         public string Password { get; set; }
+
+
+        public bool RememberMe { get; set; }
     }
 }

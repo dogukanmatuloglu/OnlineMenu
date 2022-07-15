@@ -30,7 +30,7 @@ namespace OnlineMenu.UI.Controllers
                 if (user!=null)
                 {
                     await _signInManager.SignOutAsync();
-                   Microsoft.AspNetCore.Identity.SignInResult result= await _signInManager.PasswordSignInAsync(user,loginViewModel.Password,false,false);
+                   Microsoft.AspNetCore.Identity.SignInResult result= await _signInManager.PasswordSignInAsync(user,loginViewModel.Password, loginViewModel.RememberMe,false);
 
                     if (result.Succeeded)
                     {
@@ -50,7 +50,7 @@ namespace OnlineMenu.UI.Controllers
                     ModelState.AddModelError("", "Geçersiz kullanıcı adı veya şifresi");
                 }
             }
-            return View();
+            return View(loginViewModel);
         }
         public IActionResult SignUp()
         {
