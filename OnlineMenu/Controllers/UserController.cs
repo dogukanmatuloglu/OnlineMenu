@@ -26,20 +26,51 @@ namespace OnlineMenu.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _userManager.FindByEmailAsync(loginViewModel.Email);
+                User user = await _userManager.FindByEmailAsync(loginViewModel.Email);//dogukan.matul@gmail.com
+                
+               
                 if (user!=null)
                 {
+
+                    if (await _userManager.IsLockedOutAsync(user))
+                    {
+                        ModelState.AddModelError("", "Hesabınız Bir süreliğine kilitlenmiştir lütfen daha sonra tekrar deneyiniz.");
+
+                        return View(loginViewModel);
+                    }
+
+
+
                     await _signInManager.SignOutAsync();
                    Microsoft.AspNetCore.Identity.SignInResult result= await _signInManager.PasswordSignInAsync(user,loginViewModel.Password, loginViewModel.RememberMe,false);
 
                     if (result.Succeeded)
                     {
-
+                        await _userManager.ResetAccessFailedCountAsync(user);
                         if (TempData["ReturnUrl"]!=null)
                         {
                             return Redirect(TempData["ReturnUrl"].ToString());
                         }
                         return RedirectToAction("Index", "Deneme");
+                    }
+                    else
+                    {
+                        await _userManager.AccessFailedAsync(user);
+                        
+
+                        int fail = await _userManager.GetAccessFailedCountAsync(user);
+
+
+                        ModelState.AddModelError("", $"{fail} kez başarısız giriş");
+                        if (fail==3)
+                        {
+                            await _userManager.SetLockoutEndDateAsync(user, new DateTimeOffset(DateTime.Now.AddMinutes(20)));
+                            ModelState.AddModelError("", "Hesabınız 3 başarısız giriş nedeni ile 20 dakika süre ile kilitlenmiştir. Lütfen daha sonra tekrar deneyniz.");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Geçersiz kullanıcı adı veya şifresi"); 
+                        }
                     }
                 
 
@@ -47,7 +78,7 @@ namespace OnlineMenu.UI.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Geçersiz kullanıcı adı veya şifresi");
+                    ModelState.AddModelError("", "Bu email adresine kayıtlı kullanıcı bulunamamıştır.");
                 }
             }
             return View(loginViewModel);
