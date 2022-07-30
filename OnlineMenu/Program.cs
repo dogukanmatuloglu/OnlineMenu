@@ -53,7 +53,7 @@ builder.Services.AddAutoMapper(typeof(MapProfile));
 
 var app = builder.Build();
 app.UseStaticFiles();
-
+app.UseStatusCodePages();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

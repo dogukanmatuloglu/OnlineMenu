@@ -137,6 +137,13 @@ namespace OnlineMenu.UI.Controllers
             return View(passwordResetViewModel);
         }
 
+        public IActionResult ResetPasswordConfirm(string userId,string token)
+        {
+            TempData["UserId"] = userId;
+            TempData["Token"] = token;
+            return View();
+        }
+
 
     }
 }
