@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using OnlineMenu.Core.Entities;
 using OnlineMenu.Core.IUnitOfWork;
 using OnlineMenu.Core.Services;
@@ -25,7 +26,7 @@ builder.Services.AddIdentity<User, Role>(x => {
     x.Password.RequireUppercase=false;
     x.Password.RequireDigit = false;
 
-}).AddPasswordValidator<CustomPasswordValidator>().AddUserValidator<CustomUserValidator>().AddErrorDescriber<CustomIdentityErrorDescriber>().AddEntityFrameworkStores<OnlineMenuContext>();
+}).AddPasswordValidator<CustomPasswordValidator>().AddUserValidator<CustomUserValidator>().AddErrorDescriber<CustomIdentityErrorDescriber>().AddEntityFrameworkStores<OnlineMenuContext>().AddDefaultTokenProviders();
 
 
 
@@ -52,6 +53,7 @@ builder.Services.AddAutoMapper(typeof(MapProfile));
 
 var app = builder.Build();
 app.UseStaticFiles();
+
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

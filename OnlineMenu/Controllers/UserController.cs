@@ -126,9 +126,15 @@ namespace OnlineMenu.UI.Controllers
             if (user != null)
             {
                 string passwordResetToken = _userManager.GeneratePasswordResetTokenAsync(user).Result;
+                string passwordResetLink = Url.Action("ResetPassowrdConfirm", "User", new { userId = user.Id, token = passwordResetToken }, HttpContext.Request.Scheme);
+                Helper.PasswordReset.PasswordResetSendEmail(passwordResetLink, passwordResetViewModel.Email, user.UserName);
             }
-
-            return View();
+            else
+            {
+                ModelState.AddModelError("","Sistemde kayıtlı email adresine ulaşılamamıştır.");
+            }
+          
+            return View(passwordResetViewModel);
         }
 
 
