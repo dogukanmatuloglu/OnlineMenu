@@ -127,7 +127,10 @@ namespace OnlineMenu.UI.Controllers
             {
                 string passwordResetToken = _userManager.GeneratePasswordResetTokenAsync(user).Result;
                 string passwordResetLink = Url.Action("ResetPassowrdConfirm", "User", new { userId = user.Id, token = passwordResetToken }, HttpContext.Request.Scheme);
+
                 Helper.PasswordReset.PasswordResetSendEmail(passwordResetLink, passwordResetViewModel.Email, user.UserName);
+
+                ViewBag.status = "success";
             }
             else
             {
@@ -142,6 +145,39 @@ namespace OnlineMenu.UI.Controllers
             TempData["UserId"] = userId;
             TempData["Token"] = token;
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ResetPasswordConfirm([Bind("PasswordNew")]PasswordResetViewModel passwordResetViewModel)
+        {
+            string token = TempData["Token"].ToString();
+            string userId = TempData["UserId"].ToString();
+            User user = await _userManager.FindByIdAsync(userId);
+
+            if (user!=null)
+            {
+                IdentityResult result = await _userManager.ResetPasswordAsync(user, token, passwordResetViewModel.PasswordNew);
+                if (result.Succeeded)
+                {
+                    await _userManager.UpdateSecurityStampAsync(user);
+                    TempData["PasswordResetInfo"] = "Şifreniz başarıyla yenilenmiştir.Yeni şifreniz ile giriş yapabiliirsiniz.";
+                    ViewBag.status = "succes";
+                }
+                else
+                {
+                    foreach (var item in result.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);
+                    }
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Bir hata meydana gelmiştir.");
+            }
+
+
+            return View();
+
         }
 
 
